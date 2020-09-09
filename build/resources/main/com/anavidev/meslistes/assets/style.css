@@ -1,0 +1,63 @@
+.items-list-background{
+    -fx-background-image: url("images/background-light.jpg");
+    -fx-background-size: cover;
+}
+
+.transparent-background{
+    -fx-background-color: transparent;
+}
+.add-button{
+    -fx-background-image: url("images/plus-icon.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-background-position: center;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+ }
+.add-button:hover{
+    -fx-border-color: #f5f2f2;
+}
+
+
+/* AddNewList */
+
+.popup-body{
+    -fx-background-color: white;
+}
+
+.ok-cancel-button{
+-fx-background-color: white;
+    -fx-border-width: 1;
+
+}
+
+.ok-cancel-button:hover{
+    -fx-background-color: #e6e3e3;
+}
+
+.ok-button{
+    -fx-border-color: #adadad #adadad transparent transparent;
+    -fx-border-radius: 0 0 0 10px;
+}
+.cancel-button{
+    -fx-border-color: #adadad transparent transparent transparent;
+}
+
+.icon-button{
+    -fx-background-color: white;
+}
+
+.check-button{
+    -fx-background-image: url("images/listicons/gray/check-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.check-button:hover, .check-button:focused{
+    -fx-background-image: url("images/listicons/pink/check-pink.png");
+
+}
+
+.bag-button{
+
+}
