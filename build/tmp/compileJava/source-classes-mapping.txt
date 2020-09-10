@@ -1,4 +1,0 @@
-com/anavidev/meslistes/MainController.java
- com.anavidev.meslistes.MainController
-com/anavidev/meslistes/Main.java
- com.anavidev.meslistes.Main
