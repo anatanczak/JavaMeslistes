@@ -17,7 +17,43 @@
 .add-button:hover{
     -fx-border-color: #f5f2f2;
 }
+/* LIST CELL */
+.list-cell {
+    -fx-cell-size: 36 ;
+    -fx-text-fill: black;
+    -fx-background-color: white;
+}
 
+.list-cell:selected {
+    -fx-background-color: #F0D6E2;
+
+}
+
+/* Item List View */
+
+.item-list-view .list-cell{
+    -fx-background-color: transparent;
+    -fx-background-insets: 2;
+}
+
+.item-cell-label{
+    -fx-text-fill: black;
+}
+
+
+/* Trash  button */
+.trash-button{
+    -fx-min-width: 30;
+    -fx-background-color: #F25D61;
+    -fx-background-image: url("images/trash-icon.png");
+    -fx-background-size: 20;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.trash-button:focused, .trash-button:hover {
+    -fx-min-width: 30;
+    -fx-border-style: none;
+}
 
 /* AddNewList */
 
@@ -32,7 +68,7 @@
 }
 
 .ok-cancel-button:hover{
-    -fx-background-color: #e6e3e3;
+    -fx-text-fill: #F0D6E2 ;
 }
 
 .ok-button{
@@ -47,6 +83,14 @@
     -fx-background-color: white;
 }
 
+.text-field-list{
+    -fx-focus-color: #F0D6E2 ;
+    -fx-faint-focus-color: transparent ;
+}
+
+
+
+/* Check Button  */
 .check-button{
     -fx-background-image: url("images/listicons/gray/check-gray.png");
     -fx-background-size: contain;
@@ -55,9 +99,126 @@
 }
 .check-button:hover, .check-button:focused{
     -fx-background-image: url("images/listicons/pink/check-pink.png");
-
 }
 
+/* Star Button  */
+.star-button{
+    -fx-background-image: url("images/listicons/gray/star-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.star-button:hover, .star-button:focused{
+    -fx-background-image: url("images/listicons/pink/star-pink.png");
+}
+
+/* Plane Button  */
+.plane-button{
+    -fx-background-image: url("images/listicons/gray/plane-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.plane-button:hover, .plane-button:focused{
+    -fx-background-image: url("images/listicons/pink/plane-pink.png");
+}
+
+/* Shopping Cart Button  */
+.shopping-cart-button{
+    -fx-background-image: url("images/listicons/gray/shopping-cart.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.shopping-cart-button:hover, .shopping-cart-button:focused{
+    -fx-background-image: url("images/listicons/pink/shopping-cart-pink.png");
+}
+
+/* House Button  */
+.house-button{
+    -fx-background-image: url("images/listicons/gray/house-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.house-button:hover, .house-button:focused{
+    -fx-background-image: url("images/listicons/pink/home-pink.png");
+}
+
+/* Clothes Button  */
+.clothes-button{
+    -fx-background-image: url("images/listicons/gray/clothes-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.clothes-button:hover, .clothes-button:focused{
+    -fx-background-image: url("images/listicons/pink/clothes-pink.png");
+}
+
+/* Gift Button  */
+.gift-button{
+    -fx-background-image: url("images/listicons/gray/gift-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.gift-button:hover, .gift-button:focused{
+    -fx-background-image: url("images/listicons/pink/gift-pink.png");
+}
+
+/* Bag Button  */
 .bag-button{
-
+    -fx-background-image: url("images/listicons/gray/bag-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
+.bag-button:hover, .bag-button:focused{
+    -fx-background-image: url("images/listicons/pink/bag-pink.png");
+}
+
+/* Light bulb  */
+.light-bulb-button{
+    -fx-background-image: url("images/listicons/gray/light-bulb-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.light-bulb-button:hover, .light-bulb-button:focused{
+    -fx-background-image: url("images/listicons/pink/light-bulb-pink.png");
+}
+
+/* Sport icon  */
+.sport-button{
+    -fx-background-image: url("images/listicons/gray/sport-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.sport-button:hover, .sport-button:focused{
+    -fx-background-image: url("images/listicons/pink/sport-pink.png");
+}
+
+/* Cooking icon  */
+.cooking-button{
+    -fx-background-image: url("images/listicons/gray/cooking-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.cooking-button:hover, .cooking-button:focused{
+    -fx-background-image: url("images/listicons/pink/cooking-pink.png");
+}
+
+/* Book icon  */
+.book-button{
+    -fx-background-image: url("images/listicons/gray/book-gray.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.book-button:hover, .book-button:focused{
+    -fx-background-image: url("images/listicons/pink/book-pink.png");
+}
+

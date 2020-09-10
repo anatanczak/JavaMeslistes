@@ -7,15 +7,18 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class MainController {
     public ListView <TodoList> todolistView;
@@ -25,13 +28,48 @@ public class MainController {
     private ObservableList<TodoList> lists;
 
 
+    static class ItemCell extends ListCell<Item> {
+        HBox hbox = new HBox();
+        Label label = new Label("");
+        Pane pane = new Pane();
+        Button button = new Button("");
+
+        public ItemCell() {
+            super();
+
+            hbox.getChildren().addAll(label, pane, button);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+            hbox.setAlignment(Pos.CENTER_LEFT);
+           // button.setOnAction(event -> getListView().getItems().remove(getItem()));
+            button.getStyleClass().add("trash-button");
+            label.getStyleClass().add("item-cell-label");
+        }
+
+        @Override
+        protected void updateItem(Item item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(null);
+            setGraphic(null);
+
+            if (item != null && !empty) {
+                label.setText(item.getTitle());
+                setGraphic(hbox);
+                setStyle("-fx-background-color: white;");
+            }
+            if(isSelected()){
+                setStyle("-fx-background-color: #F0D6E2; -fx-text-fill: black;");
+            }
+
+        }
+    }
+
 
    public void initialize(){
       Item item1 = new Item(1, "bread", false, false, false, "");
         Item item2 = new Item(1, "milk", false, false, false, "");
         Item item3 = new Item(1, "butter", false, false, false, "");
 
-          ArrayList items = new ArrayList();
+       ObservableList <Item>items = FXCollections.observableArrayList();;
         items.add(item1);
         items.add(item2);
         items.add(item3);
@@ -42,7 +80,7 @@ public class MainController {
         Item item5 = new Item(1, "charger", false, false, false, "");
         Item item6 = new Item(1, "credit card", false, false, false, "");
 
-       ArrayList travelItems = new ArrayList();
+       ObservableList <Item>travelItems = FXCollections.observableArrayList();
        travelItems.add(item4);
        travelItems.add(item5);
        travelItems.add(item6);
@@ -65,9 +103,61 @@ public class MainController {
            }
        });
 
-        todolistView.getItems().setAll(lists);
+        todolistView.setItems(lists);
         todolistView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         todolistView.getSelectionModel().selectFirst();
+
+        todolistView.setCellFactory(new Callback<ListView<TodoList>, ListCell<TodoList>>() {
+            @Override
+            public ListCell<TodoList> call(ListView<TodoList> param) {
+                ListCell<TodoList> cell = new ListCell<>(){
+
+                    @Override
+                    protected void updateItem(TodoList item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if(empty) {
+                            setText(null);
+                        } else {
+                            setText(item.getName());
+                        }
+
+
+                    }
+                };
+                return cell;
+            }
+        });
+        itemsView.setCellFactory(param -> new ItemCell());
+
+ /*      itemsView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
+           @Override
+           public ListCell<Item> call(ListView<Item> param) {
+
+
+               ListCell<Item> cell = new ListCell<>(){
+                   @Override
+                   protected void updateItem(Item item, boolean empty) {
+                       super.updateItem(item, empty);
+                       if(empty) {
+                           setText(null);
+
+                       } else {
+                           setText(item.getTitle());
+                           setStyle("-fx-background-color: white;");
+                           if(isSelected()){
+                               setStyle("-fx-background-color: #F0D6E2;");
+                           }
+                       }
+
+                   }
+               };
+
+               return cell;
+           }
+       });
+       */
+
     }
 
 

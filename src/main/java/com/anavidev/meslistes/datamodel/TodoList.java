@@ -1,6 +1,6 @@
 package com.anavidev.meslistes.datamodel;
 
-import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 public class TodoList {
 
@@ -9,9 +9,9 @@ public class TodoList {
     private boolean done;
     private boolean important;
     private String iconName;
-    ArrayList<Item> items;
+    ObservableList<Item> items;
 
-    public TodoList(int id, String name, boolean done, boolean important, String iconName, ArrayList<Item> items) {
+    public TodoList(int id, String name, boolean done, boolean important, String iconName, ObservableList<Item> items) {
         this.id = id;
         this.name = name;
         this.done = done;
@@ -57,11 +57,11 @@ public class TodoList {
         this.iconName = iconName;
     }
 
-    public ArrayList<Item> getItems() {
+    public ObservableList<Item> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<Item> items) {
+    public void setItems(ObservableList<Item> items) {
         this.items = items;
     }
 
