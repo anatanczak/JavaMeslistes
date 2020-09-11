@@ -1,10 +1,10 @@
 package com.anavidev.meslistes;
 
+import com.anavidev.meslistes.datamodel.DB;
 import com.anavidev.meslistes.datamodel.Item;
 import com.anavidev.meslistes.datamodel.TodoList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -55,6 +55,8 @@ public class MainController {
                 label.setText(item.getTitle());
                 setGraphic(hbox);
                 setStyle("-fx-background-color: white;");
+            } else {
+                setStyle("-fx-background-color: transparent;");
             }
             if(isSelected()){
                 setStyle("-fx-background-color: #F0D6E2; -fx-text-fill: black;");
@@ -65,34 +67,10 @@ public class MainController {
 
 
    public void initialize(){
-      Item item1 = new Item(1, "bread", false, false, false, "");
-        Item item2 = new Item(1, "milk", false, false, false, "");
-        Item item3 = new Item(1, "butter", false, false, false, "");
 
-       ObservableList <Item>items = FXCollections.observableArrayList();;
-        items.add(item1);
-        items.add(item2);
-        items.add(item3);
+        this.lists = DB.getInstance().getMyLists();
 
-        TodoList shoppingList = new TodoList(1, "Shopping list", false, false, "cart-icon.svg", items);
-
-        Item item4 = new Item(1, "passport", false, false, false, "");
-        Item item5 = new Item(1, "charger", false, false, false, "");
-        Item item6 = new Item(1, "credit card", false, false, false, "");
-
-       ObservableList <Item>travelItems = FXCollections.observableArrayList();
-       travelItems.add(item4);
-       travelItems.add(item5);
-       travelItems.add(item6);
-
-        TodoList travelList = new TodoList(1, "Travel", false, false, "plane-icon.svg", travelItems);
-
-       ObservableList<TodoList> newLists = FXCollections.observableArrayList();
-        newLists.add(shoppingList);
-        newLists.add(travelList);
-        this.lists = newLists;
-
-        //Listen to the selection of the cell in listView and dispay the correspondent items in the itemsView
+        //Listen to the selection of the cell in listView and display the correspondent items in the itemsView
        todolistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoList>() {
            @Override
            public void changed(ObservableValue<? extends TodoList> observable, TodoList oldValue, TodoList newValue) {

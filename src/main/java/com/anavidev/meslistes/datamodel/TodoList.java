@@ -20,6 +20,7 @@ public class TodoList {
         this.items = items;
     }
 
+
     public int getId() {
         return id;
     }
@@ -63,6 +64,10 @@ public class TodoList {
 
     public void setItems(ObservableList<Item> items) {
         this.items = items;
+    }
+
+    public void appendItem (Item item) {
+        this.items.add(item);
     }
 
     @Override

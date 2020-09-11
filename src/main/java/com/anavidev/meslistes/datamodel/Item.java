@@ -7,6 +7,15 @@ public class Item {
     private boolean important;
     private boolean hasImage;
     private String imageName;
+    private int listId;
+
+    public int getListId() {
+        return listId;
+    }
+
+    public void setListId(int listId) {
+        this.listId = listId;
+    }
 
     public int getId() {
         return id;
@@ -54,13 +63,14 @@ public class Item {
 
 
 
-    public Item(int id, String title, boolean done, boolean important, boolean hasImage, String imageName) {
+    public Item(int id, String title, boolean done, boolean important, boolean hasImage, String imageName, int listId) {
         this.id = id;
         this.title = title;
         this.done = done;
         this.important = important;
         this.hasImage = hasImage;
         this.imageName = imageName;
+        this.listId = listId;
     }
 
     @Override
