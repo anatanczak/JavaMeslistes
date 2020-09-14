@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -24,8 +26,13 @@ public class MainController {
     public ListView <TodoList> todolistView;
     public ListView <Item> itemsView;
     public GridPane mainGridPane;
+    public Label listLabel;
+    public TextField itemTextField;
+    private int listId = 0;
 
     private ObservableList<TodoList> lists;
+
+
 
 
     static class ItemCell extends ListCell<Item> {
@@ -68,7 +75,7 @@ public class MainController {
 
    public void initialize(){
 
-        this.lists = DB.getInstance().getMyLists();
+
 
         //Listen to the selection of the cell in listView and display the correspondent items in the itemsView
        todolistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoList>() {
@@ -77,13 +84,49 @@ public class MainController {
                if (newValue != null){
                    TodoList todoList = todolistView.getSelectionModel().getSelectedItem();
                    itemsView.getItems().setAll(todoList.getItems());
+                   listLabel.setText(newValue.getName().toUpperCase());
+                   listId = newValue.getId();
+                   System.out.println(listId);
                }
            }
        });
 
+       fillInLists();
+       todolistView.getSelectionModel().selectFirst();
+    }
+
+
+    public void plusButtonClicked() throws IOException {
+
+        Stage stage = (Stage) mainGridPane.getScene().getWindow();
+
+        Parent root = FXMLLoader.load(getClass().getResource("addNewList.fxml"));
+
+        stage.setTitle("Meslistes");
+        stage.setScene(new Scene(root));
+        stage.show();
+
+    }
+
+    public void enterPressedHandler(KeyEvent keyEvent) {
+        String title = itemTextField.getText();
+        boolean textIsEmpty = title.isEmpty() ||  title.trim().isEmpty();
+        if (keyEvent.getCode().equals(KeyCode.ENTER) && textIsEmpty == false){
+            System.out.println(title);
+
+            DB.getInstance().addItem(title, false, false, false, listId);
+            fillInLists();
+            itemTextField.setText("");
+        }
+    }
+
+    public void fillInLists(){
+
+        this.lists = DB.getInstance().getMyLists();
+
+
         todolistView.setItems(lists);
         todolistView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        todolistView.getSelectionModel().selectFirst();
 
         todolistView.setCellFactory(new Callback<ListView<TodoList>, ListCell<TodoList>>() {
             @Override
@@ -107,47 +150,15 @@ public class MainController {
             }
         });
         itemsView.setCellFactory(param -> new ItemCell());
-
- /*      itemsView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
-           @Override
-           public ListCell<Item> call(ListView<Item> param) {
-
-
-               ListCell<Item> cell = new ListCell<>(){
-                   @Override
-                   protected void updateItem(Item item, boolean empty) {
-                       super.updateItem(item, empty);
-                       if(empty) {
-                           setText(null);
-
-                       } else {
-                           setText(item.getTitle());
-                           setStyle("-fx-background-color: white;");
-                           if(isSelected()){
-                               setStyle("-fx-background-color: #F0D6E2;");
-                           }
-                       }
-
-                   }
-               };
-
-               return cell;
-           }
-       });
-       */
-
-    }
+        //selects the current list in todoListView
+        this.lists.forEach(todoList -> {
+            if(todoList.getId() == listId){
+                todolistView.getSelectionModel().select(todoList);
+            }
+        });
 
 
-    public void plusButtonClicked() throws IOException {
 
-        Stage stage = (Stage) mainGridPane.getScene().getWindow();
-
-        Parent root = FXMLLoader.load(getClass().getResource("addNewList.fxml"));
-
-        stage.setTitle("Meslistes");
-        stage.setScene(new Scene(root));
-        stage.show();
 
     }
 

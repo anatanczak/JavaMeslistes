@@ -3,10 +3,7 @@ package com.anavidev.meslistes.datamodel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DB {
     private static DB instance = new DB();
@@ -25,7 +22,6 @@ public class DB {
 
         try{
             myConnection = DriverManager.getConnection(url,"root","123456");
-            System.out.println("ok");
 
 
         } catch(Exception e) {
@@ -44,13 +40,11 @@ public class DB {
         if (myConnection != null) {
             try {
                 Statement stm = myConnection.createStatement();
-                ResultSet resultSet = stm.executeQuery("SELECT * FROM meslistes.item JOIN meslistes.list on item.list_id=list.id ORDER BY item.list_id");
+                ResultSet resultSet = stm.executeQuery("SELECT * FROM meslistes.list");
 
                 while (resultSet.next()) {
 
                     int id = resultSet.getInt("list.id");
-
-                    if (tempMyLists == null || id > tempListId){
                         tempListId = id;
 
                         String name = resultSet.getNString("list.name");
@@ -60,26 +54,34 @@ public class DB {
 
                         TodoList newList = new TodoList(id, name, done, important, iconName, FXCollections.observableArrayList());
                         tempMyLists.add(newList);
-                    }
+                }
 
-                    int itemId = resultSet.getInt("item.id");
-                    String title = resultSet.getNString("item.title");
-                    boolean itemDone = resultSet.getBoolean("item.done");
-                    boolean itemImportant = resultSet.getBoolean("item.important");
-                    boolean hasImage = resultSet.getBoolean("item.has_image");
-                    String imageName = resultSet.getNString("item.image_name");
-                    int listId = resultSet.getInt("item.list_id");
+                stm.close();
+
+                Statement itemstm = myConnection.createStatement();
+                ResultSet itemResultSet = itemstm.executeQuery("SELECT * FROM meslistes.item");
+
+                while (itemResultSet.next()) {
+
+                    int itemId = itemResultSet.getInt("item.id");
+                    String title = itemResultSet.getNString("item.title");
+                    boolean itemDone = itemResultSet.getBoolean("item.done");
+                    boolean itemImportant = itemResultSet.getBoolean("item.important");
+                    boolean hasImage = itemResultSet.getBoolean("item.has_image");
+                    String imageName = itemResultSet.getNString("item.image_name");
+                    int listId = itemResultSet.getInt("item.list_id");
                     Item newItem = new Item(itemId, title, itemDone, itemImportant, hasImage, imageName, listId);
 
-                    //myItems.add(newItem);
 
                     tempMyLists.forEach(todoList -> {
-                        if (newItem.getListId() == todoList.getId()){
+                        // System.out.println("List Id after being added to the array: " + todoList.getId() + "  " + todoList.getName());
+                        if (newItem.getListId() == todoList.getId()) {
                             todoList.appendItem(newItem);
                         }
                     });
 
                 }
+
               this.myLists = tempMyLists;
             } catch (Exception e){
                 System.out.println(e.getMessage());
@@ -87,6 +89,38 @@ public class DB {
 
         }
         return this.myLists;
+    }
+
+    public void addList(String name, boolean done, boolean important, String iconName){
+        try{
+            PreparedStatement stm = this.myConnection.prepareStatement("INSERT INTO list (name, done, important, icon_name) VALUES (?, ?, ?, ?)");
+            stm.setString(1, name);
+            stm.setBoolean(2, done);
+            stm.setBoolean(3, important);
+            stm.setString(4, iconName);
+
+            stm.execute();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void addItem(String title, boolean done, boolean important, boolean hasImage, int listId){
+        try{
+            PreparedStatement stm = this.myConnection.prepareStatement("INSERT INTO item (title, done, important, has_image, list_id) VALUES (?, ?, ?, ?, ?)");
+            stm.setString(1, title);
+            stm.setBoolean(2, done);
+            stm.setBoolean(3, important);
+            stm.setBoolean(4, hasImage);
+            stm.setInt(5, listId);
+
+            stm.execute();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
 

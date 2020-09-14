@@ -11,6 +11,14 @@ public class TodoList {
     private String iconName;
     ObservableList<Item> items;
 
+    public TodoList(int id, String name, boolean done, boolean important, String iconName) {
+        this.id = id;
+        this.name = name;
+        this.done = done;
+        this.important = important;
+        this.iconName = iconName;
+    }
+
     public TodoList(int id, String name, boolean done, boolean important, String iconName, ObservableList<Item> items) {
         this.id = id;
         this.name = name;

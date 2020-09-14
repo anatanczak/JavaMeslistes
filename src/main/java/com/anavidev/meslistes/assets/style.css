@@ -88,7 +88,12 @@
     -fx-faint-focus-color: transparent ;
 }
 
-
+.text-field-item{
+    -fx-focus-color: #F0D6E2 ;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+}
 
 /* Check Button  */
 .check-button{

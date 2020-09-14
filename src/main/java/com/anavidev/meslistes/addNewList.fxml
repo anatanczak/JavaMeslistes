@@ -17,7 +17,7 @@
       <VBox alignment="TOP_CENTER" layoutX="211.0" layoutY="80.0" maxHeight="200.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: white;" styleClass="popup-body">
          <children>
             <Label text="Create your new list" VBox.vgrow="NEVER" />
-            <TextField fx:id="listTextField" style="-fx-border-insets: 10;" styleClass="text-field-list" VBox.vgrow="NEVER">
+            <TextField fx:id="listTextField" onKeyReleased="#handleKeyReleased" style="-fx-border-insets: 10;" styleClass="text-field-list" VBox.vgrow="NEVER">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin></TextField>
@@ -113,7 +113,7 @@
             </GridPane>
             <HBox alignment="CENTER" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="NEVER">
                <children>
-                  <Button fx:id="okButton" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="91.0" text="OK" HBox.hgrow="ALWAYS">
+                  <Button fx:id="okButton" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#okCancelAction" prefHeight="30.0" prefWidth="91.0" text="OK" HBox.hgrow="ALWAYS">
                      <styleClass>
                         <String fx:value="ok-cancel-button" />
                         <String fx:value="ok-button" />
@@ -122,7 +122,7 @@
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="cancelButton" onAction="#cancelAction" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancel">
+                  <Button fx:id="cancelButton" maxHeight="30.0" maxWidth="100.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#okCancelAction" prefHeight="30.0" prefWidth="100.0" text="Cancel">
                      <styleClass>
                         <String fx:value="ok-cancel-button" />
                         <String fx:value="cancel-button" />

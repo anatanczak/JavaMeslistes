@@ -1,5 +1,6 @@
 package com.anavidev.meslistes;
 
+import com.anavidev.meslistes.datamodel.DB;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,13 +30,26 @@ public class AddNewListController {
     public AnchorPane mainAnchorPane;
 
 
-    public void cancelAction() throws IOException {
+    public  void  initialize(){
+okButton.setDisable(true);
+    }
+
+    public void okCancelAction(javafx.event.ActionEvent event) throws IOException{
+        if (event.getSource().equals(okButton)){
+            String name = listTextField.getText();
+                DB.getInstance().addList(name, true, true, "plane.png");
+        }
+
         Stage stage = (Stage) mainAnchorPane.getScene().getWindow();
-
-       Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-
+        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         stage.setTitle("Meslistes");
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    public void handleKeyReleased(){
+        String text = listTextField.getText();
+        boolean disableOkButton = text.isEmpty() || text.trim().isEmpty();
+        okButton.setDisable(disableOkButton);
     }
 }
