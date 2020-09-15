@@ -23,7 +23,6 @@ public class DB {
         try{
             myConnection = DriverManager.getConnection(url,"root","123456");
 
-
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
@@ -116,6 +115,16 @@ public class DB {
             stm.setBoolean(4, hasImage);
             stm.setInt(5, listId);
 
+            stm.execute();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteItem(int id){
+        try{
+            PreparedStatement stm = this.myConnection.prepareStatement("DELETE FROM item WHERE id = " + id + ";");
             stm.execute();
 
         } catch (Exception e) {

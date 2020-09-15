@@ -5,6 +5,7 @@ import com.anavidev.meslistes.datamodel.Item;
 import com.anavidev.meslistes.datamodel.TodoList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -40,15 +41,19 @@ public class MainController {
         Label label = new Label("");
         Pane pane = new Pane();
         Button button = new Button("");
+        Button editButton = new Button("");
 
         public ItemCell() {
             super();
 
-            hbox.getChildren().addAll(label, pane, button);
+            hbox.getChildren().addAll(label, pane, editButton, button);
             HBox.setHgrow(pane, Priority.ALWAYS);
             hbox.setAlignment(Pos.CENTER_LEFT);
-           // button.setOnAction(event -> getListView().getItems().remove(getItem()));
+            hbox.setSpacing(2);
+
             button.getStyleClass().add("trash-button");
+            editButton.getStyleClass().add("edit-button");
+
             label.getStyleClass().add("item-cell-label");
         }
 
@@ -74,19 +79,39 @@ public class MainController {
 
 
    public void initialize(){
+        itemsView.getItems().addListener(new ListChangeListener<Item>() {
+            @Override
+            public void onChanged(Change<? extends Item> c) {
+/*                lists = DB.getInstance().getMyLists();
+                System.out.println("changed item");
+                itemsView.refresh();
+                todolistView.refresh();*/
+            }
+        });
 
-
+        todolistView.getItems().addListener(new ListChangeListener<TodoList>() {
+            @Override
+            public void onChanged(Change<? extends TodoList> c) {
+//                System.out.println("changed list");
+            }
+        });
 
         //Listen to the selection of the cell in listView and display the correspondent items in the itemsView
        todolistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoList>() {
            @Override
            public void changed(ObservableValue<? extends TodoList> observable, TodoList oldValue, TodoList newValue) {
                if (newValue != null){
-                   TodoList todoList = todolistView.getSelectionModel().getSelectedItem();
-                   itemsView.getItems().setAll(todoList.getItems());
-                   listLabel.setText(newValue.getName().toUpperCase());
+                  TodoList selectedTodoList = todolistView.getSelectionModel().getSelectedItem();
+                 /*   itemsView.getItems().setAll(todoList.getItems());
+                   listLabel.setText(newValue.getName().toUpperCase());*/
                    listId = newValue.getId();
-                   System.out.println(listId);
+                   lists = DB.getInstance().getMyLists();
+                   lists.forEach( todoList -> {
+                       if (selectedTodoList.getId() == todoList.getId()){
+                           itemsView.getItems().setAll(todoList.getItems());
+                           listLabel.setText(todoList.getName().toUpperCase());
+                       }
+                   });
                }
            }
        });
@@ -132,33 +157,47 @@ public class MainController {
             @Override
             public ListCell<TodoList> call(ListView<TodoList> param) {
                 ListCell<TodoList> cell = new ListCell<>(){
-
                     @Override
                     protected void updateItem(TodoList item, boolean empty) {
                         super.updateItem(item, empty);
-
                         if(empty) {
                             setText(null);
                         } else {
                             setText(item.getName());
                         }
-
-
                     }
                 };
                 return cell;
             }
         });
-        itemsView.setCellFactory(param -> new ItemCell());
+        //itemsView.setCellFactory(param -> new ItemCell());
+        itemsView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
+            @Override
+            public ListCell<Item> call(ListView<Item> param) {
+                ItemCell cell = new ItemCell();
+                cell.button.setOnAction(event -> {
+                   Item thisItem = cell.getItem();
+                    DB.getInstance().deleteItem(thisItem.getId());
+                    itemsView.getItems().remove(thisItem);
+                    System.out.println("List id is: " + listId);
+/*                    lists.forEach(todoList -> {
+                        todoList.getItems().forEach(item -> {
+                            if (thisItem.getId() == item.getId()){
+                                todoList.getItems().remove(item);
+                            }
+                        });
+                    });*/
+
+                });
+                return cell;
+            }
+        });
         //selects the current list in todoListView
         this.lists.forEach(todoList -> {
             if(todoList.getId() == listId){
                 todolistView.getSelectionModel().select(todoList);
             }
         });
-
-
-
 
     }
 
