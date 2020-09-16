@@ -26,11 +26,6 @@
     -fx-background-color: white;
 }
 
-.list-cell:selected {
-    -fx-background-color: #F0D6E2;
-
-}
-
 /* Item List View */
 
 .item-list-view .list-cell{

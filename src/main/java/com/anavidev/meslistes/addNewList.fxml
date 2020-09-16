@@ -34,73 +34,73 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="checkIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0">
+                  <Button fx:id="checkIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="check-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="starIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="1">
+                  <Button fx:id="starIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="1">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="star-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="planeIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                  <Button fx:id="planeIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="plane-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="cartIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="3">
+                  <Button fx:id="cartIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="3">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="shopping-cart-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="houseIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.rowIndex="1">
+                  <Button fx:id="houseIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.rowIndex="1">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="house-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="clothesIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="clothesIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="clothes-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="giftIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Button fx:id="giftIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="gift-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="bagIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <Button fx:id="bagIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="bag-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="bulbIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.rowIndex="2">
+                  <Button fx:id="bulbIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.rowIndex="2">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="light-bulb-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="sportIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="sportIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="sport-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="cookingIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <Button fx:id="cookingIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="cooking-button" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="bookIcon" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <Button fx:id="bookIcon" onAction="#iconAction" mnemonicParsing="false" prefHeight="37.0" prefWidth="43.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <styleClass>
                         <String fx:value="icon-button" />
                         <String fx:value="book-button" />

@@ -12,6 +12,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -21,6 +23,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MainController {
@@ -34,48 +37,6 @@ public class MainController {
     private ObservableList<TodoList> lists;
 
 
-
-
-    static class ItemCell extends ListCell<Item> {
-        HBox hbox = new HBox();
-        Label label = new Label("");
-        Pane pane = new Pane();
-        Button button = new Button("");
-        Button editButton = new Button("");
-
-        public ItemCell() {
-            super();
-
-            hbox.getChildren().addAll(label, pane, editButton, button);
-            HBox.setHgrow(pane, Priority.ALWAYS);
-            hbox.setAlignment(Pos.CENTER_LEFT);
-            hbox.setSpacing(2);
-
-            button.getStyleClass().add("trash-button");
-            editButton.getStyleClass().add("edit-button");
-
-            label.getStyleClass().add("item-cell-label");
-        }
-
-        @Override
-        protected void updateItem(Item item, boolean empty) {
-            super.updateItem(item, empty);
-            setText(null);
-            setGraphic(null);
-
-            if (item != null && !empty) {
-                label.setText(item.getTitle());
-                setGraphic(hbox);
-                setStyle("-fx-background-color: white;");
-            } else {
-                setStyle("-fx-background-color: transparent;");
-            }
-            if(isSelected()){
-                setStyle("-fx-background-color: #F0D6E2; -fx-text-fill: black;");
-            }
-
-        }
-    }
 
 
    public void initialize(){
@@ -152,22 +113,19 @@ public class MainController {
 
         todolistView.setItems(lists);
         todolistView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        //todolistView.setCellFactory(param -> new TodoListCell());
 
         todolistView.setCellFactory(new Callback<ListView<TodoList>, ListCell<TodoList>>() {
             @Override
             public ListCell<TodoList> call(ListView<TodoList> param) {
-                ListCell<TodoList> cell = new ListCell<>(){
-                    @Override
-                    protected void updateItem(TodoList item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if(empty) {
-                            setText(null);
-                        } else {
-                            setText(item.getName());
-                        }
-                    }
-                };
-                return cell;
+                try {
+                    ListCell<TodoList> cell = new TodoListCell();
+                    return cell;
+                } catch (FileNotFoundException e){
+                    ListCell<TodoList> cell = new ListCell();
+                    return cell;
+                }
+
             }
         });
         //itemsView.setCellFactory(param -> new ItemCell());
@@ -179,15 +137,6 @@ public class MainController {
                    Item thisItem = cell.getItem();
                     DB.getInstance().deleteItem(thisItem.getId());
                     itemsView.getItems().remove(thisItem);
-                    System.out.println("List id is: " + listId);
-/*                    lists.forEach(todoList -> {
-                        todoList.getItems().forEach(item -> {
-                            if (thisItem.getId() == item.getId()){
-                                todoList.getItems().remove(item);
-                            }
-                        });
-                    });*/
-
                 });
                 return cell;
             }
@@ -200,5 +149,96 @@ public class MainController {
         });
 
     }
+
+
+
+    static class ItemCell extends ListCell<Item> {
+        HBox hbox = new HBox();
+        Label label = new Label("");
+        Pane pane = new Pane();
+        Button button = new Button("");
+        Button editButton = new Button("");
+
+        public ItemCell() {
+            super();
+
+            hbox.getChildren().addAll(label, pane, editButton, button);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+            hbox.setAlignment(Pos.CENTER_LEFT);
+            hbox.setSpacing(2);
+
+            button.getStyleClass().add("trash-button");
+            editButton.getStyleClass().add("edit-button");
+
+            label.getStyleClass().add("item-cell-label");
+        }
+
+        @Override
+        protected void updateItem(Item item, boolean empty) {
+            super.updateItem(item, empty);
+            setText(null);
+            setGraphic(null);
+
+            if (item != null && !empty) {
+                label.setText(item.getTitle());
+                setGraphic(hbox);
+                setStyle("-fx-background-color: white;");
+            } else {
+                setStyle("-fx-background-color: transparent;");
+            }
+            if(isSelected()){
+                setStyle("-fx-background-color: #f5f2f2; -fx-text-fill: black;");
+            }
+
+        }
+    }
+
+
+    /* TODOLIST CELL*/
+
+
+
+    static class TodoListCell extends ListCell<TodoList> {
+        HBox hbox = new HBox();
+        Image image;
+        ImageView imageView;
+        Label label = new Label("");
+        Pane pane = new Pane();
+
+        public TodoListCell() throws FileNotFoundException {
+            super();
+
+            image = new Image(getClass().getResourceAsStream("assets/images/plus-icon.png"));
+            imageView = new ImageView(image);
+            hbox.getChildren().addAll(imageView, label, pane);
+            HBox.setHgrow(pane, Priority.ALWAYS);
+            hbox.setAlignment(Pos.CENTER_LEFT);
+            hbox.setSpacing(10);
+            imageView.setFitHeight(25);
+            imageView.setPreserveRatio(true);
+            label.getStyleClass().add("item-cell-label");
+        }
+
+        @Override
+        protected void updateItem(TodoList todoList, boolean empty) {
+            super.updateItem(todoList, empty);
+            setText(null);
+            setGraphic(null);
+
+            if (todoList != null && !empty) {
+                label.setText(todoList.getName().toUpperCase());
+                setGraphic(hbox);
+                setStyle("-fx-background-color: white;");
+                Image newIcon = new Image(getClass().getResourceAsStream("assets/images/listicons/gray/" + todoList.getIconName()));
+                imageView.setImage(newIcon);
+
+            }
+            if(isSelected()){
+                setStyle("-fx-background-color: #f5f2f2; -fx-text-fill: black;");
+            }
+
+        }
+    }
+
 
 }
