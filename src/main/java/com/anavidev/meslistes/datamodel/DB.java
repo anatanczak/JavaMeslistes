@@ -131,5 +131,23 @@ public class DB {
             System.out.println(e.getMessage());
         }
     }
+
+    public void updateItem(int id, String newTitle){
+        try{
+            PreparedStatement stm = this.myConnection.prepareStatement("UPDATE item SET title = \"" + newTitle + "\" WHERE id = " + id + ";");
+            stm.execute();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateList(int id, String newName, String newIcon){
+        try{
+            PreparedStatement stm = this.myConnection.prepareStatement("UPDATE list SET name = \"" + newName + "\", icon_name = \"" + newIcon + "\" WHERE id = " + id + ";");
+            stm.execute();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
 

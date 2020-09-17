@@ -3,9 +3,6 @@ package com.anavidev.meslistes;
 import com.anavidev.meslistes.datamodel.DB;
 import com.anavidev.meslistes.datamodel.Item;
 import com.anavidev.meslistes.datamodel.TodoList;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -21,7 +18,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,48 +35,50 @@ public class MainController {
 
 
 
-   public void initialize(){
-        itemsView.getItems().addListener(new ListChangeListener<Item>() {
-            @Override
-            public void onChanged(Change<? extends Item> c) {
-/*                lists = DB.getInstance().getMyLists();
-                System.out.println("changed item");
-                itemsView.refresh();
-                todolistView.refresh();*/
-            }
-        });
-
-        todolistView.getItems().addListener(new ListChangeListener<TodoList>() {
-            @Override
-            public void onChanged(Change<? extends TodoList> c) {
-//                System.out.println("changed list");
-            }
-        });
+    public void initialize(){
 
         //Listen to the selection of the cell in listView and display the correspondent items in the itemsView
-       todolistView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoList>() {
-           @Override
-           public void changed(ObservableValue<? extends TodoList> observable, TodoList oldValue, TodoList newValue) {
-               if (newValue != null){
-                  TodoList selectedTodoList = todolistView.getSelectionModel().getSelectedItem();
-                 /*   itemsView.getItems().setAll(todoList.getItems());
-                   listLabel.setText(newValue.getName().toUpperCase());*/
-                   listId = newValue.getId();
-                   lists = DB.getInstance().getMyLists();
-                   lists.forEach( todoList -> {
-                       if (selectedTodoList.getId() == todoList.getId()){
-                           itemsView.getItems().setAll(todoList.getItems());
-                           listLabel.setText(todoList.getName().toUpperCase());
-                       }
-                   });
-               }
-           }
-       });
+        todolistView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null){
+                TodoList selectedTodoList = todolistView.getSelectionModel().getSelectedItem();
 
-       fillInLists();
-       todolistView.getSelectionModel().selectFirst();
+                listId = newValue.getId();
+                lists = DB.getInstance().getMyLists();
+                lists.forEach( todoList -> {
+                    if (selectedTodoList.getId() == todoList.getId()){
+                        itemsView.getItems().setAll(todoList.getItems());
+                        itemsView.getSelectionModel().selectFirst();
+                        listLabel.setText(todoList.getName().toUpperCase());
+                    }
+                });
+            }
+        });
+
+
+        fillInLists();
+        todolistView.getSelectionModel().selectFirst();
+
     }
 
+    public void editListButtonClicked() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("addNewList.fxml"));
+        Parent listParent = loader.load();
+
+        Scene scene = new Scene(listParent);
+        AddNewListController controller = loader.getController();
+        controller.listIsBeingEdited = true;
+        lists.forEach(todoList -> {
+            if (todoList.getId() == listId){
+                controller.setListTextField(todoList);
+            }
+        });
+        Stage stage = (Stage) mainGridPane.getScene().getWindow();
+        stage.setTitle("Meslistes");
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public void plusButtonClicked() throws IOException {
 
@@ -98,13 +96,18 @@ public class MainController {
         String title = itemTextField.getText();
         boolean textIsEmpty = title.isEmpty() ||  title.trim().isEmpty();
         if (keyEvent.getCode().equals(KeyCode.ENTER) && textIsEmpty == false){
-            System.out.println(title);
 
             DB.getInstance().addItem(title, false, false, false, listId);
             fillInLists();
             itemTextField.setText("");
         }
+
+
     }
+
+
+
+    /* FILL IN LISTVIEWS */
 
     public void fillInLists(){
 
@@ -115,32 +118,20 @@ public class MainController {
         todolistView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         //todolistView.setCellFactory(param -> new TodoListCell());
 
-        todolistView.setCellFactory(new Callback<ListView<TodoList>, ListCell<TodoList>>() {
-            @Override
-            public ListCell<TodoList> call(ListView<TodoList> param) {
-                try {
-                    ListCell<TodoList> cell = new TodoListCell();
-                    return cell;
-                } catch (FileNotFoundException e){
-                    ListCell<TodoList> cell = new ListCell();
-                    return cell;
-                }
-
-            }
-        });
-        //itemsView.setCellFactory(param -> new ItemCell());
-        itemsView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
-            @Override
-            public ListCell<Item> call(ListView<Item> param) {
-                ItemCell cell = new ItemCell();
-                cell.button.setOnAction(event -> {
-                   Item thisItem = cell.getItem();
-                    DB.getInstance().deleteItem(thisItem.getId());
-                    itemsView.getItems().remove(thisItem);
-                });
+        todolistView.setCellFactory(param -> {
+            try {
+                ListCell<TodoList> cell = new TodoListCell();
+                return cell;
+            } catch (FileNotFoundException e){
+                ListCell<TodoList> cell = new ListCell();
                 return cell;
             }
+
         });
+
+        itemsView.setCellFactory(param -> new ItemCell());
+        itemsView.getSelectionModel().selectFirst();
+
         //selects the current list in todoListView
         this.lists.forEach(todoList -> {
             if(todoList.getId() == listId){
@@ -149,29 +140,43 @@ public class MainController {
         });
 
     }
-
-
+    /* ITEM CELL */
 
     static class ItemCell extends ListCell<Item> {
+
+
         HBox hbox = new HBox();
         Label label = new Label("");
         Pane pane = new Pane();
         Button button = new Button("");
         Button editButton = new Button("");
+        TextField textField = new TextField();
 
         public ItemCell() {
             super();
 
-            hbox.getChildren().addAll(label, pane, editButton, button);
-            HBox.setHgrow(pane, Priority.ALWAYS);
-            hbox.setAlignment(Pos.CENTER_LEFT);
-            hbox.setSpacing(2);
 
-            button.getStyleClass().add("trash-button");
-            editButton.getStyleClass().add("edit-button");
+                hbox.getChildren().addAll(label, pane, editButton, button);
+                HBox.setHgrow(pane, Priority.ALWAYS);
+                hbox.setAlignment(Pos.CENTER_LEFT);
+                hbox.setSpacing(2);
+                button.getStyleClass().add("trash-button");
+                editButton.getStyleClass().add("edit-button");
+                label.getStyleClass().add("item-cell-label");
 
-            label.getStyleClass().add("item-cell-label");
+
+                button.setOnAction(event -> {
+                    Item thisItem = getItem();
+                    DB.getInstance().deleteItem(thisItem.getId());
+                    getListView().getItems().remove(thisItem);
+                });
+
+                editButton.setOnAction(event -> {
+
+                });
+
         }
+
 
         @Override
         protected void updateItem(Item item, boolean empty) {
@@ -180,9 +185,11 @@ public class MainController {
             setGraphic(null);
 
             if (item != null && !empty) {
-                label.setText(item.getTitle());
-                setGraphic(hbox);
-                setStyle("-fx-background-color: white;");
+                    label.setText(item.getTitle());
+                    setGraphic(hbox);
+                    setStyle("-fx-background-color: white;");
+
+
             } else {
                 setStyle("-fx-background-color: transparent;");
             }
@@ -239,6 +246,5 @@ public class MainController {
 
         }
     }
-
 
 }

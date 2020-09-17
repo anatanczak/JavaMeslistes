@@ -58,7 +58,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" styleClass="ellipsis-button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" />
+                  <Button fx:id="editListButton" mnemonicParsing="false" onAction="#editListButtonClicked" prefHeight="27.0" prefWidth="33.0" styleClass="ellipsis-button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
             <TextField fx:id="itemTextField" onKeyPressed="#enterPressedHandler" promptText="Type your item here ..." styleClass="text-field-item">
