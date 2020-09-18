@@ -221,7 +221,8 @@ public class MainController {
             HBox.setHgrow(pane, Priority.ALWAYS);
             hbox.setAlignment(Pos.CENTER_LEFT);
             hbox.setSpacing(10);
-            imageView.setFitHeight(25);
+            imageView.setFitWidth(25);
+            imageView.setFitWidth(25);
             imageView.setPreserveRatio(true);
             label.getStyleClass().add("item-cell-label");
         }

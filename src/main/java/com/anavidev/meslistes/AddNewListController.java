@@ -40,12 +40,7 @@ public class AddNewListController {
 
     public  void  initialize(){
 
-        if (listIsBeingEdited){
-            okButton.setDisable(false);
-
-        } else {
             okButton.setDisable(true);
-        }
     }
 
     public void setListTextField(TodoList todoList){
